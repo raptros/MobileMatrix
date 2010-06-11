@@ -1,0 +1,59 @@
+package com.roundarch.mobilematrix;
+
+public class RVector
+{
+    private double[] vals;
+    
+    public RVector(double[] values)
+    {
+        vals = values.clone();
+    }
+
+    private RVector()
+    {
+
+    }
+    
+    private void setValues(double[] values)
+    {
+        vals = values;
+    }
+
+    public double get(int i)
+    {
+        return vals[i];
+    }
+
+    private void set(int i, double val)
+    {
+        vals[i] = val;
+    }
+
+    public int size()
+    {
+        return vals.length;
+    }
+
+    public RVector copy()
+    {
+        return new RVector(vals);
+    }
+
+    public RVector scale(double amount)
+    {
+        RVector other = copy();
+        for (int i = 0; i < length(); i++)
+            other.set(i, amount * vals[i]);
+        return other;
+    }
+
+    public RVector add(RVector other)
+    {
+        if (size() != other.size())
+            return null;
+
+        for (int i = 0; i < size(); i++)
+
+        
+    }
+}
