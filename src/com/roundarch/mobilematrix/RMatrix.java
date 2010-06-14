@@ -12,21 +12,26 @@ public class RMatrix
     private ArrayList<Double> vals;
     private int rows, cols;
 
-    public static RMatrix nullMatrix ()
+    public static RMatrix nullMatrix()
     {
         return new RMatrix(0,0);
     }
 
-    public int getRows()
+    public static RMatrix zeroMatrix(int rs, int cs)
     {
-        return rows;
+        RMatrix zeroes = new RMatrix (rs, cs);
+        for (int i = 0; i < rs * cs; i++)
+            zeroes.vals.add((Double)0.0);
+        return zeroes;
     }
 
-    public int getCols()
+    public static RMatrix unitMatrix(int rs, int cs)
     {
-        return cols;
+        RMatrix unit = RMatrix.zeroMatrix(rs, cs);
+        for (int i = 0; i < unit.diaLen(); i++)
+            unit.set(i, i, 1.0);
+        return unit;
     }
-
 
     public RMatrix(int rs, int cs, double[] valsIn)
     {
@@ -44,6 +49,16 @@ public class RMatrix
         vals = new ArrayList<Double>(rows * cols);
     }
 
+    private double get(int r, int c)
+    {
+        return vals.get(r*cols+c);
+    }
+
+    private void set(int r, int c, double v)
+    {
+        vals.set(r*cols+c, v);
+    }
+
     private RMatrix(int rs, int cs, ArrayList<Double> values)
     {
         rows = rs;
@@ -51,6 +66,20 @@ public class RMatrix
         vals = values;
     }
 
+    public int diaLen()
+    {
+        return (rows < cols) ? rows : cols;
+    }
+
+    public int getRows()
+    {
+        return rows;
+    }
+
+    public int getCols()
+    {
+        return cols;
+    }
 
     public RMatrix clone()
     {
@@ -110,9 +139,7 @@ public class RMatrix
         RMatrix other = clone();
         other.cols++;
         for (int row = 0; row < rows; row++)
-        {
             other.vals.add(row * other.cols + other.cols - 1, col.get(row));
-        }
         return other;
     }
 
@@ -160,7 +187,10 @@ public class RMatrix
             return null;
         RMatrix out = new RMatrix(0, m.cols);
         for (int r = 0; r < rows; r++)
-            out.appendRow(m.vmMult(getRow(r)));
+        {
+            out.rows++;
+            out.vals.addAll(m.vmMult(getRow(r)).getVals());
+       }
         return out;
     }
 
@@ -170,8 +200,12 @@ public class RMatrix
         if (x.size() != cols || y.size() != rows)
             return null;
         RMatrix z = new RMatrix(rows, 0);
+        RVector temp = null;
         for (int col = 0; col < cols; col++)
-            z.appendCol(y.axpy(scale * x.get(col), getCol(col)));
+        {
+            temp = y.axpy(scale * x.get(col), getCol(col));
+            z = z.appendCol(temp);
+        }
         return z;
     }
 }

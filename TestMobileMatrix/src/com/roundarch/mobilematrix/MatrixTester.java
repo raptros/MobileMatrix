@@ -95,8 +95,37 @@ public class MatrixTester extends ActivityInstrumentationTestCase2<MobileMatrixA
         assertEquals(mat.getRow(2) + " vs. " + vec2, vec2, mat.getRow(2));
     }
 
-    public void testMVMult()
+    public void testMVMult1()
     {
+        double[] m = { 1.0, 2.0, 7.0, 3.0, 4.0, 8.0, 5.0, 6.0, 9.0};
+        RMatrix mat = new RMatrix(3,3,m);
+        double[] v1 = {1, 0, 0};
+        double[] v2 = {1,3,5};
+        RVector e0 = new RVector(v1);
+        RVector exp = new RVector(v2);
+        assertEquals(exp, mat.mvMult(e0));
+    }
+
+    public void testVMMult1()
+    {
+        double[] m = { 1.0, 2.0, 7.0, 3.0, 4.0, 8.0, 5.0, 6.0, 9.0};
+        RMatrix mat = new RMatrix(3,3,m);
+        double[] v1 = {1, 0, 0};
+        double[] v2 = {1,3,5};
+        RVector e0 = new RVector(v1);
+        RVector exp = new RVector(v2);
+        assertEquals(exp, mat.mvMult(e0));
+    }
+
+    public void testMMUnitMult()
+    {
+        double[] m = { 1.0, 2.0, 7.0, 3.0, 4.0, 8.0, 5.0, 6.0, 9.0};
+        RMatrix mat = new RMatrix(3,3,m);
+        assertEquals(3, mat.diaLen());
+        RMatrix unit = RMatrix.unitMatrix(3,3);
+        assertEquals(mat, mat.mmMult(unit));
+        assertEquals(mat, unit.mmMult(mat));
+
 
     }
 }
