@@ -1,6 +1,7 @@
 package com.roundarch.mobilematrix;
 import java.lang.Math;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 public class RVector
 {
@@ -10,7 +11,8 @@ public class RVector
     {
         vals = new ArrayList<Double>(values.length);
         //add all.
-        vals.addAll((List<Double>)Arrays.asList(values));
+        for (int i = 0; i < values.length; i++)
+            vals.add(values[i]);
     }
 
     public RVector(ArrayList<Double> values)
@@ -30,7 +32,7 @@ public class RVector
 
     private void set(int i, double val)
     {
-        vals.set(i, value);
+        vals.set(i, val);
     }
 
     public int size()
@@ -38,9 +40,14 @@ public class RVector
         return vals.size();
     }
 
+    public boolean equals(Object other)
+    {
+        return other instanceof RVector && vals.equals(((RVector)other).vals);
+    }
+
     public RVector clone()
     {
-        return new RVector(vals.clone());
+        return new RVector((ArrayList<Double>)vals.clone());
     }
 
     public RVector scale(double amount)
@@ -94,7 +101,7 @@ public class RVector
     public RVector drop(int dropWhich)
     {
         RVector other = clone();
-        other.remove(dropWhich);
+        other.vals.remove(dropWhich);
         return other;
     }
     
@@ -122,6 +129,11 @@ public class RVector
 
     public RVector append(double value)
     {
-        return insert(size() - 1, value);
+        return insert(size(), value);
     }   
+
+    public String toString()
+    {
+        return vals.toString();
+    }
 }

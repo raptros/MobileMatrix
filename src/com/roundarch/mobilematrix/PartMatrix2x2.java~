@@ -1,6 +1,0 @@
-package com.roundarch.mobilematrix;
-import java.lang.Math;
-public class PartMatrix2x2
-{
-
-}
