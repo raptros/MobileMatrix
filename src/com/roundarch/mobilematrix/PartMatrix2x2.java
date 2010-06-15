@@ -20,5 +20,10 @@ public class PartMatrix2x2
         br = orig;
     }
 
+    public String toString()
+    {
+        return tl + " " + tr + "\n"
+             + bl + " " + br;
+    }
 
 }

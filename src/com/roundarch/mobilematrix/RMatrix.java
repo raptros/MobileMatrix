@@ -3,6 +3,7 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.lang.StringBuilder;
 
 /**
  * A matrix in row major order.
@@ -129,7 +130,17 @@ public class RMatrix
 
     public String toString()
     {
-        return "["+rows+"x"+cols+"] " + vals.toString();
+        StringBuilder niceArray = new StringBuilder();
+        niceArray.append("[");
+        for (int row = 0; row < rows; row++)
+        {
+            if (row != 0)
+                niceArray.append("\n").append(" ");
+            for (int col = 0; col < cols; col++)
+                niceArray.append(get(row, col)).append(" ");
+        }
+        niceArray.append("]");
+        return "["+rows+"x"+cols+"]\n" + niceArray.toString();
     }
 
     public RMatrix appendCol(RVector col)
@@ -195,7 +206,7 @@ public class RMatrix
     }
 
     //Z = A + scale * y * x^T
-    public RMatrix rank1(double scale, RVector x, RVector y)
+    public RMatrix rank1(double scale, RVector y, RVector x)
     {
         if (x.size() != cols || y.size() != rows)
             return null;
@@ -207,5 +218,13 @@ public class RMatrix
             z = z.appendCol(temp);
         }
         return z;
+    }
+
+    public RMatrix transpose()
+    {
+        RMatrix trans = new RMatrix(cols, rows);
+        for (int col = 0; col < cols; col++)
+            trans = trans.appendRow(getCol(col));
+        return trans;
     }
 }

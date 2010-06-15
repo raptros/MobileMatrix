@@ -62,4 +62,11 @@ public class PartMatrix3x3
         part.bl = mA20.appendCol(va21);
         part.br = mA22;
     }
+
+    public String toString()
+    {
+        return mA00 + " " + va01 + " " + mA02 + "\n"
+             + va10 + " " + sa11 + " " + va12 + "\n"
+             + mA20 + " " + va21 + " " + mA22;
+    }
 }

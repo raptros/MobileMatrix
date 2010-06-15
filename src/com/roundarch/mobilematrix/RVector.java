@@ -7,6 +7,24 @@ public class RVector
 {
     private ArrayList<Double> vals;
     
+    public static RVector zeroVector(int len)
+    {
+        ArrayList<Double> someVals = new ArrayList<Double>(len);
+        for (int i = 0; i < len; i++)
+            someVals.add((Double)0.0);
+        return new RVector(someVals);
+    }
+    
+    public static RVector unitVector(int n, int len)
+    {
+        if (n >= len)
+            return null;
+        RVector unit = RVector.zeroVector(len);
+        unit.set(n, 1.0);
+        return unit;
+    }
+
+
     public RVector(double[] values)
     {
         vals = new ArrayList<Double>(values.length);

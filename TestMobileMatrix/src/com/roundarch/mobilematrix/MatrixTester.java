@@ -125,7 +125,51 @@ public class MatrixTester extends ActivityInstrumentationTestCase2<MobileMatrixA
         RMatrix unit = RMatrix.unitMatrix(3,3);
         assertEquals(mat, mat.mmMult(unit));
         assertEquals(mat, unit.mmMult(mat));
-
-
     }
+
+    public void testRank1()
+    {
+        //RMatrix mat = new RMatrix(3,3,m);
+        RMatrix unit = RMatrix.unitMatrix(3,3);
+        double[] v1 = {1, 1, 1};
+        double[] v2 = {2, 2, 2};
+        RVector vec1 = new RVector(v1);
+        RVector vec2 = new RVector(v2);
+        
+        RMatrix mat = unit.rank1(-1.0, vec1, vec2);
+        double[] ex = {-1, -2, -2, -2, -1, -2, -2, -2, -1};
+        RMatrix expected = new RMatrix(3, 3, ex);
+
+        assertEquals(expected + " vs. " + mat, expected, mat);
+    }
+    
+
+    public void testUnitVectorGenerator()
+    {
+        double[] ex1 = {1, 0, 0, 0};
+        double[] ex2 = {0, 1, 0, 0};
+        double[] ex3 = {0, 0, 1, 0};
+        double[] ex4 = {0, 0, 0, 1};
+        RVector e1 = new RVector(ex1);
+        RVector e2 = new RVector(ex2);
+        RVector e3 = new RVector(ex3);
+        RVector e4 = new RVector(ex4);
+
+        RVector gen1 = RVector.unitVector(0, 4);
+        RVector gen2 = RVector.unitVector(1, 4);
+        RVector gen3 = RVector.unitVector(2, 4);
+        RVector gen4 = RVector.unitVector(3, 4);
+
+        assertNotNull(gen1);
+        assertNotNull(gen2);
+        assertNotNull(gen3);
+        assertNotNull(gen4);
+        assertEquals(e1, gen1);
+        assertEquals(e2, gen2);
+        assertEquals(e3, gen3);
+        assertEquals(e4, gen4);
+    }
+        
+
+
 }
