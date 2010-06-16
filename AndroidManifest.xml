@@ -11,5 +11,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="CreateMatrixActivity" 
+            android:label="Create Matrix"
+            />
+        <activity android:name = "FactorMatrixActivity"
+            android:label="Factoring Matrix"
+            />
     </application>
 </manifest> 

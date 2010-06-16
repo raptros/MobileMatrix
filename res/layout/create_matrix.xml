@@ -5,22 +5,19 @@
     android:layout_height="fill_parent"
     >
     <TextView
-        android:text="Width and Height"
+        android:text="Input Matrix"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         />
-    <EditText
-        android:id="@+id/size"
+    <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:maxLength="1"
-        android:digits="123456"
+        android:id="@+id/mtable"
         />
     <Button 
-        android:id="@+id/create"
+        android:id="@+id/makeit"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content" 
-        android:text="Create"
+        android:text="Done"
         />
 </LinearLayout>
