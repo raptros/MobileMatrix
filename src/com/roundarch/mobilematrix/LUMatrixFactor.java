@@ -18,8 +18,8 @@ public class LUMatrixFactor
 {
     public RMatrix mat, a, l, p;
 
-    private PartMatrix2x2 a2x2, l2x2, p2x2;
-    private PartMatrix3x3 aPart, lPart, pPart;
+    public PartMatrix2x2 a2x2, l2x2, p2x2;
+    public PartMatrix3x3 aPart, lPart, pPart;
 
 
     public LUMatrixFactor(RMatrix mat)
@@ -38,11 +38,12 @@ public class LUMatrixFactor
      * continue on
      * A effectively becomes U.
      *
-     * Also, notify watchers each step of the way.
+     * Also, notify listener each step of the way.
      */
-    public void factor()
+    public void factor(FactorListener listener)
     {
         preparePartitions();
+        listener.onInitialPartition();
 
         while (a2x2.tl.diaLen()< a.diaLen())
         {
@@ -50,7 +51,9 @@ public class LUMatrixFactor
             aPart.repartRightDown();
             lPart.repartRightDown();
             pPart.repartRightDown();
-            
+
+            listener.onRepartition1();
+
             //compute pivot, and perform pivot
             RMatrix piv = genPivot( calcPivot(aPart.sa11, aPart.va21),  a2x2.br.getRows());
 
@@ -58,10 +61,14 @@ public class LUMatrixFactor
             l2x2.bl = piv.mmMult(l2x2.bl); //this is missing from rvdg's algorithm.
             p2x2.br = piv.mmMult(p2x2.br);
 
+            listener.onPermute();
+
             //repartition
             aPart.repartRightDown();
             lPart.repartRightDown();
             pPart.repartRightDown();
+
+            listener.onRepartition2();
 
             //perform calculations.
             lPart.va21 = aPart.va21.scale(1.0/aPart.sa11);
@@ -69,14 +76,20 @@ public class LUMatrixFactor
             aPart.va21 = RVector.zeroVector(aPart.va21.size());
             aPart.mA22 = aPart.mA22.rank1(-1.0, lPart.va21, aPart.va12);
 
+            listener.onCalculateComplete();
+
             //continue with
             aPart.continueLeftUp();
             lPart.continueLeftUp();
             pPart.continueLeftUp();
+
+            listener.onContinuing();
         }
         a = a2x2.tl;
         l = l2x2.tl;
         p = p2x2.tl;
+
+        listener.onFactorComplete();
     }
 
     /**

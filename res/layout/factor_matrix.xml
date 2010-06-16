@@ -4,10 +4,46 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <TextView
-        android:id="@+id/display"
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat0" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         />
+    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat1" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat2" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat3" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <!--  <TableLayout android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+        <TableRow>
+            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_tl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_tr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                />
+        </TableRow>
+        <TableRow>
+            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_bl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_br"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                />
+        </TableRow>
+    </TableLayout>-->
 </LinearLayout>

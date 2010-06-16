@@ -7,7 +7,6 @@ import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
-//import android.widget.OnClickListener;
 import android.widget.TextView;
 
 public class MobileMatrixActivity extends Activity implements OnClickListener
@@ -22,8 +21,8 @@ public class MobileMatrixActivity extends Activity implements OnClickListener
         setContentView(R.layout.main);
 
         Button createButton = (Button)findViewById(R.id.create);
-        createButton.setOnClickListener(this);
         size = (EditText)findViewById(R.id.size);
+        createButton.setOnClickListener(this);
     }
 
     public void onClick(View v)
