@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.IndexOutOfBoundsException;
 
+/**
+ * This class carries out the LU matrix factorization,
+ * with partial pivoting.
+ *
+ * LU factoring takes matrix A and generates matrices 
+ * L and U such that A=LU, where L is unit lower triangular
+ * and U is upper triangular.
+ * With pivoting, it also generates P such that A=PLU; P
+ * being a permutation matrix.
+ */
 public class LUMatrixFactor
 {
-    public RMatrix a, l, u, p;
+    public RMatrix mat, a, l, p;
 
-    private PartMatrix2x2 a2x2, l2x2, u2x2, p2x2;
-    private PartMatrix3x3 aPart, lPart, uPart, pPart;
+    private PartMatrix2x2 a2x2, l2x2, p2x2;
+    private PartMatrix3x3 aPart, lPart, pPart;
 
 
-    public LUMatrixFactor(RMatrix a)
+    public LUMatrixFactor(RMatrix mat)
     {
-        this.a = a;
-        a2x2 = new PartMatrix2x2(a);
-        aPart = new PartMatrix3x3(a2x2);
-
-        l = RMatrix.unitMatrix(a.getRows(), a.getCols());
-        l2x2 = new PartMatrix2x2(l);
-        lPart = new PartMatrix3x3(l2x2);
-
-       // u = RMatrix.zeroMatrix(a.getRows(), a.getCols());
-        p = RMatrix.unitMatrix(a.getRows(), a.getCols());
-        p2x2 = new PartMatrix2x2(p);
-        pPart = new PartMatrix3x3(p2x2);
+        this.mat = mat;
     }
     
     /*
@@ -43,6 +42,8 @@ public class LUMatrixFactor
      */
     public void factor()
     {
+        preparePartitions();
+
         while (a2x2.tl.diaLen()< a.diaLen())
         {
             //Partition\
@@ -78,6 +79,28 @@ public class LUMatrixFactor
         p = p2x2.tl;
     }
 
+    /**
+     * Reset the partitions before factoring.
+     */
+    private void preparePartitions()
+    {
+        a = mat;
+        a2x2 = new PartMatrix2x2(a);
+        aPart = new PartMatrix3x3(a2x2);
+
+        l = RMatrix.unitMatrix(a.getRows(), a.getCols());
+        l2x2 = new PartMatrix2x2(l);
+        lPart = new PartMatrix3x3(l2x2);
+
+        p = RMatrix.unitMatrix(a.getRows(), a.getCols());
+        p2x2 = new PartMatrix2x2(p);
+        pPart = new PartMatrix3x3(p2x2);
+    }
+
+    /**
+     * Calculates how to pivot the matrix in order to make sure that
+     * the value at alpha's position is no longer 0.
+     */
     public static int calcPivot(double alpha, RVector edge)
     {
         int pos = 0;
@@ -93,13 +116,19 @@ public class LUMatrixFactor
         //probably needs an error.
     }
 
+
+    /**
+     * generates a square permutation matrix that moves
+     * the selected row (in piv) up to the top.
+     */
     public static RMatrix genPivot(int piv, int rows)
     {
         RMatrix pivot = new RMatrix(0, rows);
-        pivot = pivot.appendRow(RVector.unitVector(piv, rows));
+        pivot = pivot.appendRow(RVector.unitVector(piv, rows)); //see below
         for (int i = 0; i < rows; i++)
         {
             if (i != piv)
+                //because appendRow generates a new matrix.
                 pivot = pivot.appendRow(RVector.unitVector(i, rows));
         }
         return pivot;

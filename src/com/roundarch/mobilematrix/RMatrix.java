@@ -6,18 +6,24 @@ import java.util.Arrays;
 import java.lang.StringBuilder;
 
 /**
- * A matrix in row major order.
+ * A matrix in row major order. Contains the basic matrix arithmetic
+ * operations, plus operations to cut apart and put bac together matrices.
+ * I don't like having to deal with modifiable matrices, so most
+ * of the operations here return new matrices. Sort of a function programming
+ * thing. I don't really want to talk about memory considerations.
  */
 public class RMatrix
 {
     private ArrayList<Double> vals;
     private int rows, cols;
 
+    //Convenience method for a fake matrix
     public static RMatrix nullMatrix()
     {
         return new RMatrix(0,0);
     }
 
+    //Returns a matrix of all zeroes at specified size
     public static RMatrix zeroMatrix(int rs, int cs)
     {
         RMatrix zeroes = new RMatrix (rs, cs);
@@ -26,6 +32,11 @@ public class RMatrix
         return zeroes;
     }
 
+    /**
+     * Misnamed function. What it creates is actually 
+     * a matrix with ones on the diagonal, like the 
+     * Identity matrix.
+     */
     public static RMatrix unitMatrix(int rs, int cs)
     {
         RMatrix unit = RMatrix.zeroMatrix(rs, cs);
@@ -34,6 +45,9 @@ public class RMatrix
         return unit;
     }
 
+    /**
+     * construct a matrix.
+     */
     public RMatrix(int rs, int cs, double[] valsIn)
     {
         rows = rs;
@@ -42,7 +56,11 @@ public class RMatrix
         for (int i = 0; i < valsIn.length; i++)
             vals.add(valsIn[i]);
     }
-
+    
+    /**
+     * An empty matrix, with space allocated for 
+     * every index.
+     */
     public RMatrix(int rs, int cs)
     {
         rows = rs;
@@ -50,16 +68,27 @@ public class RMatrix
         vals = new ArrayList<Double>(rows * cols);
     }
 
-    private double get(int r, int c)
+    /**
+     * While indexing is harder to use, this can be convenient.
+     */
+    public double get(int r, int c)
     {
         return vals.get(r*cols+c);
     }
 
+    /**
+     * This is used only for creating new matrices.
+     */
     private void set(int r, int c, double v)
     {
         vals.set(r*cols+c, v);
     }
 
+    /**
+     * construct a matrix from an already made values list.
+     * Private because I don't want non-matrices to be able to
+     * modify matrices.
+     */
     private RMatrix(int rs, int cs, ArrayList<Double> values)
     {
         rows = rs;
@@ -67,6 +96,9 @@ public class RMatrix
         vals = values;
     }
 
+    /**
+     * Returns the number of items on the diagonal.
+     */
     public int diaLen()
     {
         return (rows < cols) ? rows : cols;
@@ -82,11 +114,18 @@ public class RMatrix
         return cols;
     }
 
+    /**
+     * clones a matrix with its values.
+     */
     public RMatrix clone()
     {
         return new RMatrix(rows, cols, (ArrayList<Double>)vals.clone());
     }
 
+    /**
+     * Creates a new matrix that is this matrix with a row 
+     * removed.
+     */
     public RMatrix dropRow(int row)
     {
         RMatrix other = clone();
@@ -100,6 +139,10 @@ public class RMatrix
         return other;
     }
 
+    /**
+     * Creates a new matrix that is this matrix with a column 
+     * removed.
+     */
     public RMatrix dropCol(int col)
     {
         RMatrix other = clone();
@@ -112,6 +155,10 @@ public class RMatrix
         return other;
     }
     
+    /**
+     * Creates a new matrix by appending a vector to
+     * this matrix as a row.
+     */
     public RMatrix appendRow(RVector row)
     {
         if (row.size() != cols)
@@ -119,6 +166,21 @@ public class RMatrix
         RMatrix other = clone();
         other.rows++;
         other.vals.addAll(row.getVals());
+        return other;
+    }
+
+    /**
+     * Creates a new matrix by appending a vector to
+     * this matrix as a column.
+     */
+    public RMatrix appendCol(RVector col)
+    {
+        if (col.size() != rows)
+            return null;
+        RMatrix other = clone();
+        other.cols++;
+        for (int row = 0; row < rows; row++)
+            other.vals.add(row * other.cols + other.cols - 1, col.get(row));
         return other;
     }
 
@@ -143,17 +205,9 @@ public class RMatrix
         return "["+rows+"x"+cols+"]\n" + niceArray.toString();
     }
 
-    public RMatrix appendCol(RVector col)
-    {
-        if (col.size() != rows)
-            return null;
-        RMatrix other = clone();
-        other.cols++;
-        for (int row = 0; row < rows; row++)
-            other.vals.add(row * other.cols + other.cols - 1, col.get(row));
-        return other;
-    }
-
+    /**
+     * Returns a row of this matrix as a vector.
+     */
     public RVector getRow(int row)
     {
         ArrayList<Double> rowList = new ArrayList<Double>(cols);
@@ -163,6 +217,9 @@ public class RMatrix
         return new RVector(rowList);
     }
 
+    /**
+     * Returns a column of this matrix as a vector.
+     */
     public RVector getCol(int col)
     {
         ArrayList<Double> colList = new ArrayList<Double>(rows);
@@ -171,6 +228,11 @@ public class RMatrix
         return new RVector(colList);
     }
 
+    /**
+     * Matrix vector multiplication. Returns matrix Z,
+     * where for this matrix M, and passed in vector V,
+     * Z=M*v
+     */
     public RVector mvMult(RVector v)
     {
         if (v.size() != cols)
@@ -181,6 +243,11 @@ public class RMatrix
         return new RVector(results);
     }
 
+    /**
+     * Vector-Matrix multiplication.  Returns matrix Z,
+     * where for this matrix M, and passed in vector V,
+     * Z=v^T*M 
+     */
     public RVector vmMult(RVector v)
     {
         if (v.size() != rows)
@@ -192,6 +259,11 @@ public class RMatrix
 
     }
 
+    /**
+     * Matrix-Matrix multiplication. Returns matrix C, where,
+     * for this matrix as A and passed in matrix as B,
+     * C=AB
+     */
     public RMatrix mmMult(RMatrix m)
     {
         if (cols != m.rows)
@@ -200,12 +272,20 @@ public class RMatrix
         for (int r = 0; r < rows; r++)
         {
             out.rows++;
+            //this line means that I don't have to 
+            //keep generating new matrices to complete
+            //the multiplication.
             out.vals.addAll(m.vmMult(getRow(r)).getVals());
        }
         return out;
     }
 
-    //Z = A + scale * y * x^T
+    /**
+     * Performs a rank 1 update. Returns matrix Z, where, for
+     * this matrix as A, passed in double as scale, and passed
+     * in vectors as y and x,
+     * Z = A + scale * y * x^T
+     */
     public RMatrix rank1(double scale, RVector y, RVector x)
     {
         if (x.size() != cols || y.size() != rows)
@@ -220,6 +300,9 @@ public class RMatrix
         return z;
     }
 
+    /**
+     * Returns the transpose of this matrix.
+     */
     public RMatrix transpose()
     {
         RMatrix trans = new RMatrix(cols, rows);
