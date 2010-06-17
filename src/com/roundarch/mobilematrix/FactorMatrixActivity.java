@@ -19,31 +19,36 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.util.Log;
 
+/**
+ * displays the factoring process.
+ */
 public class FactorMatrixActivity extends Activity implements FactorListener
 {
-    LUMatrixFactor lu;
-    MatrixView mv0;
-    PartitionGroup ml, mu, mp;
+    LUMatrixFactor lu; //the factor object
+    MatrixView mv0;  //display of the input matrix
+    PartitionGroup ml, mu, mp; //display the changing of the output matrices
     boolean hasRun;
 
     public static final String TAG = "FactorMatrixActivity";
     RMatrix mat;
 
-
+    /**
+     * find the view objects needed to make this work
+     */
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.factor_matrix);
         mv0 = (MatrixView)findViewById(R.id.mat0);
-        /*mv1 = (MatrixView)findViewById(R.id.mat1);
-        mv2 = (MatrixView)findViewById(R.id.mat2);
-        mv3 = (MatrixView)findViewById(R.id.mat3);*/
         ml = (PartitionGroup)findViewById(R.id.pg_ml);
         mu = (PartitionGroup)findViewById(R.id.pg_mu);
         mp = (PartitionGroup)findViewById(R.id.pg_mp);
         hasRun = false;
     }
 
+    /**
+     * get the input matrix, display it
+     */
     public void onStart()
     {
         super.onStart();
@@ -56,6 +61,9 @@ public class FactorMatrixActivity extends Activity implements FactorListener
         mv0.setMatrix(mat);
     }
 
+    /**
+     * activity is in view, so run the factoring process.
+     */
     public void onResume()
     {
         super.onResume();
@@ -63,6 +71,9 @@ public class FactorMatrixActivity extends Activity implements FactorListener
         hasRun = true;
     }
 
+    /**
+     * start a thread to run the factoring.
+     */
     public void runFactor()
     {
         int size = getIntent().getIntExtra("size", 4);
@@ -80,8 +91,9 @@ public class FactorMatrixActivity extends Activity implements FactorListener
         luThread.start();
     }
 
-
-
+    /**
+     * not used.
+     */
     private RMatrix vectorToColumnMatrix(RVector v)
     {
         RMatrix tmp = new RMatrix(0, v.size());
@@ -95,6 +107,10 @@ public class FactorMatrixActivity extends Activity implements FactorListener
     }
 
 
+    /**
+     * matrix has been parted into a 2x2 matrix, so show that.
+     * then wait 1.5 seconds.
+     */
     public void onInitialPartition()
     {
         runOnUiThread(
@@ -133,6 +149,11 @@ public class FactorMatrixActivity extends Activity implements FactorListener
     {
     }
 
+    /**
+     * the 2x2 partitioning has been moved down and left.
+     * the calculation has completed at this point, and the
+     * next will begin soon.
+     */
     public void onContinuing()
     {
         runOnUiThread(

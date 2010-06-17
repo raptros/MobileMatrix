@@ -21,16 +21,24 @@ import android.widget.TextView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+/**
+ * Displays a matrix in a textview. Has a function for formatting a string 
+ * to present the matrix in as close to aligned columns as possible.
+ *
+ */
 public class MatrixView extends TextView
 {
     private static final String TAG = "MatrixView";
     private RMatrix mat;
     private int precision = 1;
-    public static final int GUESS_DIGITS = 4; //how many char a num will have (to left) at min.
+    public static final int GUESS_DIGITS = 5; //how many char a num will have (to left) at min.
     public static final int COL_EXTRA = 2; // space, dot
     public static final int ROW_SPACE = 1; //leading char, ending newline
     private boolean matrixModded = false;
 
+    /**
+     * Constructors follow.
+     */
     public MatrixView(Context context)
     {
         super(context);
@@ -47,6 +55,9 @@ public class MatrixView extends TextView
     }
     
 
+    /**
+     * set the matrix, and update the string.
+     */
     public void setMatrix(RMatrix mat)
     {
         this.mat = mat;
@@ -59,6 +70,9 @@ public class MatrixView extends TextView
         update();
     }
 
+    /**
+     * I wouldn't use this.
+     */
     public void setMatrixOutsideThread(RMatrix mat)
     {
         this.mat = mat;
@@ -66,6 +80,9 @@ public class MatrixView extends TextView
         postInvalidate();
     }
 
+    /**
+     * yeah, i don't know.
+     */
     public void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);

@@ -9,6 +9,11 @@ import android.widget.RelativeLayout;
 import java.lang.Math;
 import android.widget.RelativeLayout.LayoutParams;
 
+/**
+ * This helps deal with a 2x2 partitioning for display. 
+ * look at the res/layout/factor_matrix.xml file 
+ * to see what it is for.
+ */
 public class PartitionGroup extends RelativeLayout
 {
     MatrixView tl, tr, bl, br;
@@ -24,6 +29,9 @@ public class PartitionGroup extends RelativeLayout
         super(context, attrs);
     }
 
+    /**
+     * find the views being layed out.
+     */
     public void onFinishInflate()
     {
         super.onFinishInflate();
@@ -36,6 +44,9 @@ public class PartitionGroup extends RelativeLayout
         
     }
 
+    /**
+     * update the matrices and the sizes of the partitioners.
+     */
     public void updatePartitioning(PartMatrix2x2 part)
     {
         tl.setMatrix(part.tl);
