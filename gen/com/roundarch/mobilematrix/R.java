@@ -14,14 +14,32 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
-        public static final int create=0x7f050007;
+        public static final int create=0x7f050019;
         public static final int makeit=0x7f050001;
         public static final int mat0=0x7f050002;
-        public static final int mat1=0x7f050003;
-        public static final int mat2=0x7f050004;
-        public static final int mat3=0x7f050005;
+        public static final int ml_bl=0x7f050008;
+        public static final int ml_br=0x7f050009;
+        public static final int ml_hsepbig=0x7f050005;
+        public static final int ml_tl=0x7f050004;
+        public static final int ml_tr=0x7f050007;
+        public static final int ml_vsepbig=0x7f050006;
+        public static final int mp_bl=0x7f050016;
+        public static final int mp_br=0x7f050017;
+        public static final int mp_hsepbig=0x7f050013;
+        public static final int mp_tl=0x7f050012;
+        public static final int mp_tr=0x7f050015;
+        public static final int mp_vsepbig=0x7f050014;
         public static final int mtable=0x7f050000;
-        public static final int size=0x7f050006;
+        public static final int mu_bl=0x7f05000f;
+        public static final int mu_br=0x7f050010;
+        public static final int mu_hsepbig=0x7f05000c;
+        public static final int mu_tl=0x7f05000b;
+        public static final int mu_tr=0x7f05000e;
+        public static final int mu_vsepbig=0x7f05000d;
+        public static final int pg_ml=0x7f050003;
+        public static final int pg_mp=0x7f050011;
+        public static final int pg_mu=0x7f05000a;
+        public static final int size=0x7f050018;
     }
     public static final class layout {
         public static final int create_matrix=0x7f030000;

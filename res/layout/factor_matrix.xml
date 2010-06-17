@@ -7,43 +7,174 @@
     <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat0" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         />
-    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat1" 
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        />
+    <com.roundarch.mobilematrix.PartitionGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat2" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <com.roundarch.mobilematrix.MatrixView android:id="@+id/mat3" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <!--  <TableLayout android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/pg_ml"
         >
-        <TableRow>
-            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_tl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_tr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                />
-        </TableRow>
-        <TableRow>
-            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_bl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <com.roundarch.mobilematrix.MatrixView android:id="@+id/lua_br"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                />
-        </TableRow>
-    </TableLayout>-->
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/ml_tl"
+            android:tag="TL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+        <View android:id="@+id/ml_hsepbig"
+            android:layout_width="0dip"
+            android:layout_height="2dip"
+            android:background="#FF909090"
+            android:layout_below="@id/ml_tl"
+            android:tag="HSEP"
+            />
+        <View android:id="@+id/ml_vsepbig"
+            android:layout_height="0dip"
+            android:layout_width="2dip"
+            android:background="#FF909090"
+            android:layout_toRightOf="@id/ml_tl"
+            android:tag="VSEP"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/ml_tr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="TR"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/ml_vsepbig"
+            android:layout_above="@id/ml_hsepbig"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/ml_bl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="BL"
+            android:layout_below="@id/ml_hsepbig"
+            android:layout_toLeftOf="@id/ml_vsepbig"
+            android:layout_alignParentLeft="true"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/ml_br"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="BR"
+            android:layout_below="@id/ml_hsepbig"
+            android:layout_toRightOf="@id/ml_vsepbig"
+            />
+    </com.roundarch.mobilematrix.PartitionGroup>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        />
+    <com.roundarch.mobilematrix.PartitionGroup 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/pg_mu"
+        >
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mu_tl"
+            android:tag="TL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+        <View android:id="@+id/mu_hsepbig"
+            android:layout_width="0dip"
+            android:layout_height="2dip"
+            android:background="#FF909090"
+            android:layout_below="@id/mu_tl"
+            android:tag="HSEP"
+            />
+        <View android:id="@+id/mu_vsepbig"
+            android:layout_height="0dip"
+            android:layout_width="2dip"
+            android:background="#FF909090"
+            android:layout_toRightOf="@id/mu_tl"
+            android:tag="VSEP"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mu_tr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="TR"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/mu_vsepbig"
+            android:layout_above="@id/mu_hsepbig"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mu_bl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="BL"
+            android:layout_below="@id/mu_hsepbig"
+            android:layout_toLeftOf="@id/mu_vsepbig"
+            android:layout_alignParentLeft="true"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mu_br"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="BR"
+            android:layout_below="@id/mu_hsepbig"
+            android:layout_toRightOf="@id/mu_vsepbig"
+            />
+    </com.roundarch.mobilematrix.PartitionGroup>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        />
+    <com.roundarch.mobilematrix.PartitionGroup 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/pg_mp"
+        >
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mp_tl"
+            android:tag="TL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+        <View android:id="@+id/mp_hsepbig"
+            android:layout_width="0dip"
+            android:layout_height="2dip"
+            android:background="#FF909090"
+            android:layout_below="@id/mp_tl"
+            android:tag="HSEP"
+            />
+        <View android:id="@+id/mp_vsepbig"
+            android:layout_height="0dip"
+            android:layout_width="2dip"
+            android:background="#FF909090"
+            android:layout_toRightOf="@id/mp_tl"
+            android:tag="VSEP"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mp_tr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="TR"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/mp_vsepbig"
+            android:layout_above="@id/mp_hsepbig"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mp_bl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="BL"
+            android:layout_below="@id/mp_hsepbig"
+            android:layout_toLeftOf="@id/mp_vsepbig"
+            android:layout_alignParentLeft="true"
+            />
+        <com.roundarch.mobilematrix.MatrixView android:id="@+id/mp_br"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="BR"
+            android:layout_below="@id/mp_hsepbig"
+            android:layout_toRightOf="@id/mp_vsepbig"
+            />
+    </com.roundarch.mobilematrix.PartitionGroup>
 </LinearLayout>

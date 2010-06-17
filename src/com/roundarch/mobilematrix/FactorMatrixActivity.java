@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.lang.NumberFormatException;
 import java.lang.Thread;
 import java.lang.InterruptedException;
+import java.lang.Runnable;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,29 +17,30 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.util.Log;
 
 public class FactorMatrixActivity extends Activity implements FactorListener
 {
     LUMatrixFactor lu;
-    MatrixView mv0, mv1, mv2, mv3;
-               //luAtl, luAtr, luAbl, luAbr;
+    MatrixView mv0;
+    PartitionGroup ml, mu, mp;
     boolean hasRun;
 
+    public static final String TAG = "FactorMatrixActivity";
     RMatrix mat;
+
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.factor_matrix);
         mv0 = (MatrixView)findViewById(R.id.mat0);
-        mv1 = (MatrixView)findViewById(R.id.mat1);
+        /*mv1 = (MatrixView)findViewById(R.id.mat1);
         mv2 = (MatrixView)findViewById(R.id.mat2);
-        mv3 = (MatrixView)findViewById(R.id.mat3);
-        /*luAtl = (MatrixView)findViewById(R.id.lua_tl);
-        luAtr = (MatrixView)findViewById(R.id.lua_tr);
-        luAbl = (MatrixView)findViewById(R.id.lua_bl);
-        luAbr = (MatrixView)findViewById(R.id.lua_br);
-        */
+        mv3 = (MatrixView)findViewById(R.id.mat3);*/
+        ml = (PartitionGroup)findViewById(R.id.pg_ml);
+        mu = (PartitionGroup)findViewById(R.id.pg_mu);
+        mp = (PartitionGroup)findViewById(R.id.pg_mp);
         hasRun = false;
     }
 
@@ -52,7 +54,6 @@ public class FactorMatrixActivity extends Activity implements FactorListener
         int size = getIntent().getIntExtra("size", 4);
         mat = new RMatrix(size, size, vals);
         mv0.setMatrix(mat);
-
     }
 
     public void onResume()
@@ -66,13 +67,20 @@ public class FactorMatrixActivity extends Activity implements FactorListener
     {
         int size = getIntent().getIntExtra("size", 4);
         lu = new LUMatrixFactor(mat);
-        lu.factor(this);
+        final FactorListener luListen = this;
+        Thread luThread = new Thread() 
+        {
+            public void run()
+            {
+                lu.factor(luListen);
+            }
+            
+        };
 
-        mv0.setMatrix(lu.mat);
-        mv1.setMatrix(lu.l);
-        mv2.setMatrix(lu.a);
-        mv3.setMatrix(lu.p);
+        luThread.start();
     }
+
+
 
     private RMatrix vectorToColumnMatrix(RVector v)
     {
@@ -89,10 +97,24 @@ public class FactorMatrixActivity extends Activity implements FactorListener
 
     public void onInitialPartition()
     {
-/*        luAtl.setMatrix(lu.a2x2.tl);
-        luAtr.setMatrix(lu.a2x2.tr);
-        luAbl.setMatrix(lu.a2x2.bl);
-        luAbr.setMatrix(lu.a2x2.br);*/
+        runOnUiThread(
+            new Runnable() 
+            {
+                public void run() 
+                {
+                    ml.updatePartitioning(lu.l2x2);
+                    mu.updatePartitioning(lu.a2x2);
+                    mp.updatePartitioning(lu.p2x2);
+                }
+            }
+        );
+        try
+        {
+            Thread.sleep(1500);
+        }
+        catch (InterruptedException inter)
+        {
+        }
     }
 
     public void onRepartition1()
@@ -113,10 +135,24 @@ public class FactorMatrixActivity extends Activity implements FactorListener
 
     public void onContinuing()
     {
-/*        luAtl.setMatrix(lu.a2x2.tl);
-        luAtr.setMatrix(lu.a2x2.tr);
-        luAbl.setMatrix(lu.a2x2.bl);
-        luAbr.setMatrix(lu.a2x2.br);*/
+        runOnUiThread(
+            new Runnable() 
+            {
+                public void run() 
+                {
+                    ml.updatePartitioning(lu.l2x2);
+                    mu.updatePartitioning(lu.a2x2);
+                    mp.updatePartitioning(lu.p2x2);
+                }
+            }
+        );
+        try
+        {
+            Thread.sleep(1500);
+        }
+        catch (InterruptedException inter)
+        {
+        }
     }
 
     public void onFactorComplete()

@@ -15,7 +15,7 @@ import android.util.Log;
 
 import android.view.View;
 import android.view.View.OnClickListener;
-
+import android.graphics.Canvas;
 
 import android.widget.TextView;
 import android.widget.TableLayout;
@@ -25,10 +25,11 @@ public class MatrixView extends TextView
 {
     private static final String TAG = "MatrixView";
     private RMatrix mat;
-    private int precision = 3;
-    public static final int GUESS_DIGITS = 5; //how many char a num will have (to left) at min.
+    private int precision = 1;
+    public static final int GUESS_DIGITS = 4; //how many char a num will have (to left) at min.
     public static final int COL_EXTRA = 2; // space, dot
     public static final int ROW_SPACE = 1; //leading char, ending newline
+    private boolean matrixModded = false;
 
     public MatrixView(Context context)
     {
@@ -57,6 +58,23 @@ public class MatrixView extends TextView
         this.precision = precision;
         update();
     }
+
+    public void setMatrixOutsideThread(RMatrix mat)
+    {
+        this.mat = mat;
+        matrixModded = true;
+        postInvalidate();
+    }
+
+    public void onDraw(Canvas canvas)
+    {
+        super.onDraw(canvas);
+        if (matrixModded)
+        {
+            Log.d(TAG, "redrawing matrices");
+            update();
+        }
+    }
     
     //Rebuild the text string.
     public void update()
@@ -68,7 +86,6 @@ public class MatrixView extends TextView
         StringBuilder bld = new StringBuilder(rows*(cols*(precision+GUESS_DIGITS+COL_EXTRA)+ROW_SPACE));
         Formatter fromat = new Formatter(bld, Locale.US);
         String formatString = String.format("%%%d.%df", GUESS_DIGITS+precision, precision);
-        Log.d(TAG, formatString);
         double curr = 0;
         for (int row = 0; row < rows; row++)
         {
@@ -82,6 +99,7 @@ public class MatrixView extends TextView
                 bld.append("\n");
         }
         setText(bld.toString());
+        matrixModded = false;
     }
 
 }
