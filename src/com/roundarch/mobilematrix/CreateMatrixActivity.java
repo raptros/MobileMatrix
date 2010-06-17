@@ -21,6 +21,8 @@ import android.widget.TableRow;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Random;
+
 
 
 public class CreateMatrixActivity extends Activity implements OnClickListener
@@ -67,6 +69,8 @@ public class CreateMatrixActivity extends Activity implements OnClickListener
 
     private TableLayout layout;
     private Button makeIt;
+    
+    private Random random;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -77,6 +81,7 @@ public class CreateMatrixActivity extends Activity implements OnClickListener
         makeIt = (Button)findViewById(R.id.makeit);
         makeIt.setOnClickListener(this);
         size = -1;
+        random = new Random();
     }
 
     public void onStart()
@@ -89,6 +94,22 @@ public class CreateMatrixActivity extends Activity implements OnClickListener
         {
             size = foundSize;
             generateLayout();
+            fillRandom();
+        }
+    }
+
+    private void fillRandom()
+    {
+        for (int row = 0; row < size; row++)
+        {
+            for (int col = 0; col < size; col++)
+            {
+                int got = random.nextInt(100);
+                int negate = random.nextInt(3);
+                if ( negate == 2)
+                    got *= -1;
+                watchers.get(row*size+col).edit.setText(""+(double)got);
+            }
         }
     }
 
